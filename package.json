@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-three/drei": "^9.32.0",
     "@react-three/fiber": "^8.7.4",
     "@tensorflow-models/handpose": "^0.0.7",
     "@tensorflow/tfjs": "^3.20.0",
@@ -16,6 +17,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-webcam": "^7.0.1",
+    "sass": "^1.55.0",
     "three": "^0.144.0"
   },
   "devDependencies": {
