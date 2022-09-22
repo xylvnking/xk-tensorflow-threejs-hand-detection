@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-three/fiber": "^8.7.4",
     "@tensorflow-models/handpose": "^0.0.7",
     "@tensorflow/tfjs": "^3.20.0",
     "next": "12.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-webcam": "^7.0.1"
+    "react-webcam": "^7.0.1",
+    "three": "^0.144.0"
   },
   "devDependencies": {
     "eslint": "8.23.1",

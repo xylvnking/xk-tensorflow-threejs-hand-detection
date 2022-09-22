@@ -2,17 +2,65 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
-import React, {useRef, useEffect, useState} from 'react'
+import React, {Suspense, useRef, useEffect, useState} from 'react'
+
 import * as tf from '@tensorflow/tfjs'
 import * as handpose from '@tensorflow-models/handpose'
 import Webcam from 'react-webcam'
 
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
+const CameraController = () => {
+  const { camera, gl } = useThree();
+  useEffect(
+    () => {
+      const controls = new OrbitControls(camera, gl.domElement);
+
+      controls.minDistance = 3;
+      controls.maxDistance = 20;
+      return () => {
+        controls.dispose();
+      };
+    },
+    [camera, gl]
+  );
+  return null;
+};
+function Box(props) {
+  // This reference gives us direct access to the THREE.Mesh object
+  const ref = useRef()
+  // Hold state for hovered and clicked events
+  // const [hovered, hover] = useState(false)
+  // const [clicked, click] = useState(false)
+  // Subscribe this component to the render-loop, rotate the mesh every frame
+  // useFrame((state, delta) => (ref.current.rotation.x += 0.01))
+  // Return the view, these are regular Threejs elements expressed in JSX
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      // scale={clicked ? 1.5 : 1}
+      scale={1}
+      // onClick={(event) => click(!clicked)}
+      // onPointerOver={(event) => hover(true)}
+      // onPointerOut={(event) => hover(false)}
+      >
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={'hotpink'} />
+    </mesh>
+  )
+}
 
 
 export default function Home() {
   const webcamRef = useRef(null)
   const canvasRef = useRef(null)
   const [handData, setHandData] = useState(null)
+  const handPositionRef = useRef([0,0,0])
+
+  const [vectorFromHandData, setVectorFromHandData] = useState([0,0,0])
 
   const runHandPose = async () => {
     const net = await handpose.load({
@@ -20,13 +68,13 @@ export default function Home() {
       scale:.5
     })
 
-    // console.log('net')
-
     setInterval(() => {
       detectHand(net)
     }, 500)
+    
   }
 
+  console.log(handPositionRef.current)
 
   const detectHand = async (net) => {
     if (
@@ -37,44 +85,40 @@ export default function Home() {
         const video = webcamRef.current.video
         const videoWidth = webcamRef.current.video.videoWidth
         const videoHeight = webcamRef.current.video.videoHeight
-
         webcamRef.current.video.width = videoWidth
         webcamRef.current.video.height = videoHeight
+        // canvasRef.current.width = videoWidth
+        // canvasRef.current.height = videoHeight
 
-        canvasRef.current.width = videoWidth
-        canvasRef.current.height = videoHeight
-
-        // console.log(net.estimateHands(video))
         const hand = await net.estimateHands(video)
         if (hand[0]) {
+          // console.log(hand)
+          handPositionRef.current = [
+            (Math.round(hand[0].annotations.indexFinger[0][1]) / 50),
+            0,
+            (Math.round(hand[0].annotations.indexFinger[0][0]) / 100)
+          ]
           setHandData(hand[0])
+          setVectorFromHandData(
+            [
+              (Math.round(hand[0].annotations.indexFinger[0][1]) / 50),
+              0,
+              (Math.round(hand[0].annotations.indexFinger[0][0]) / 100)
+            ]
+          )
+
+
         } else {
           setHandData(null)
         }
-
-        console.log(hand[0])
-
-
-
-
-        const ctx = canvasRef.current.getContext("2d")
-
-  
-        drawHand(hand, ctx)
       }
-
-
-
-
-
-
   }
+
+
 
   useEffect(() => {
     runHandPose()
   }, [])
-
-
 
   return (
     <div className={styles.container}>
@@ -85,18 +129,18 @@ export default function Home() {
       </Head>
       <Webcam ref={webcamRef} style={
             {
-                position: 'absolute',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                left: 0,
-                right: 0,
+                // position: 'absolute',
+                // marginLeft: 'auto',
+                // marginRight: 'auto',
+                // left: 0,
+                // right: 0,
                 textAlign: 'center',
                 zIndex:9,
                 width: 640,
                 height: 480,
             }
           }/>
-        <canvas ref={canvasRef} style={
+        {/* <canvas ref={canvasRef} style={
          {
             position: 'absolute',
             marginLeft: 'auto',
@@ -108,7 +152,45 @@ export default function Home() {
             width: 640,
             height: 480,
           }
-        }/>
+        }/> */}
+        
+        <div
+          style={{
+            width: 640,
+            height: 480,
+            // backgroundColor: 'red'
+          }}
+        >
+          
+        <Canvas>
+          <CameraController />
+          {/* <Suspense>
+              <Model/>
+          </Suspense> */}
+          <ambientLight intensity={0.5} />
+          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+          <pointLight position={[-10, -10, -10]} />
+          {/* <Box position={[-1.2, 0, 0]} /> */}
+          <Box 
+            position={[0, 0, 0]} 
+            // position={[
+            //   (vectorFromHandData[2]/ 5),
+            //   (vectorFromHandData[0]/ 5),
+            //   0,
+            // ]} 
+            // rotation={[1, 3, 50]}
+            // rotation={vectorFromHandData}
+            rotation={handPositionRef.current}
+            // rotation={
+            //   [
+            //     `${handData ? (Math.round(handData.annotations.indexFinger[0][1]) / 50) : 0}`, 
+            //     0,
+            //     `${handData ? (Math.round(handData.annotations.indexFinger[0][0]) / 100) : 0}`, 
+            //   ]}
+          />
+        </Canvas>
+        </div>
+        
         {
           handData &&
         // <h1>finger position is {typeof handData.annotations.indexFinger[0][0]}</h1>
