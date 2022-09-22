@@ -34,54 +34,23 @@ const CameraController = () => {
   );
   return null;
 };
-function Box(props) {
-  // This reference gives us direct access to the THREE.Mesh object
-  const ref = useRef()
-  // Hold state for hovered and clicked events
-  // const [hovered, hover] = useState(false)
-  // const [clicked, click] = useState(false)
-  // Subscribe this component to the render-loop, rotate the mesh every frame
-  // useFrame((state, delta) => (ref.current.rotation.x += 0.01))
-  // useFrame((gl, delta) => (props.handRotation))
-  // Return the view, these are regular Threejs elements expressed in JSX
-  return (
-    <mesh
-      {...props}
-      ref={ref}
-      // scale={clicked ? 1.5 : 1}
-      scale={1}
-      // onClick={(event) => click(!clicked)}
-      // onPointerOver={(event) => hover(true)}
-      // onPointerOut={(event) => hover(false)}
-      >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={'hotpink'} />
-    </mesh>
-  )
-}
 
 
 export default function Home() {
-  const router = useRouter()
   console.log('component render')
+  const router = useRouter()
   const webcamRef = useRef(null)
-  const canvasRef = useRef(null)
-  const [handData, setHandData] = useState(null)
+  // const canvasRef = useRef(null)
+  // const [handData, setHandData] = useState(null)
   const handPositionRef = useRef([0,0,0])
-  const [webcamReady, setWebcamReady] = useState(false)
+  // const [webcamReady, setWebcamReady] = useState(false)
   const webcamReadyRef = useRef(false)
   const videoRef = useRef(null)
   // const [updateSpeed, setUpdateSpeed] = useState(500)
   // const updateSpeed = useRef(router.query.speed)
   const updateSpeed = useRef(null)
   // const [updateSpeed, setUpdateSpeed] = useState(router.query.speed)
-  const [vectorFromHandData, setVectorFromHandData] = useState([0,0,0])
-
-  // const [windowSize, setWindowSize] = useState();
-
-
-  // console.log(windowSize.innerWidth)
-  // console.log(windowSize.innerHeight)
+  // const [vectorFromHandData, setVectorFromHandData] = useState([0,0,0])
 
   const runHandPose = async () => {
     const net = await handpose.load({
@@ -89,43 +58,26 @@ export default function Home() {
       // inputResolution:{width:900, height:480}, 
       scale:.25
     })
-    // console.log(updateSpeed)
     setInterval(() => {
       detectHand(net)
     }, updateSpeed.current)
-    // }, 200)
     
   }
   console.log('yeah')
-  // console.log(updateSpeed)
-  // ?speed=1000
   
-  function Boxy(props) {
-    // This reference gives us direct access to the THREE.Mesh object
+  
+  // function Boxy(props) {
+  function Boxy() {
     const ref = useRef()
-    // Hold state for hovered and clicked events
-    // const [hovered, hover] = useState(false)
-    // const [clicked, click] = useState(false)
-    // Subscribe this component to the render-loop, rotate the mesh every frame
-    
     useFrame((state, delta) => {
       ref.current.rotation.x = handPositionRef.current[0]
       ref.current.rotation.y = handPositionRef.current[2]
     })
-    
-    // useFrame(({ gl, scene, camera }) => (ref.current.rotation.x = handPositionRef.current[0]));
-    
-    // useFrame((gl, delta) => (props.handRotation))
-    // Return the view, these are regular Threejs elements expressed in JSX
     return (
       <mesh
-      {...props}
+      // {...props}
       ref={ref}
-      // scale={clicked ? 1.5 : 1}
       scale={1}
-      // onClick={(event) => click(!clicked)}
-      // onPointerOver={(event) => hover(true)}
-      // onPointerOut={(event) => hover(false)}
       >
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color={'hotpink'} />
@@ -139,20 +91,8 @@ export default function Home() {
       // typeof webcamRef.current !=='undefined' && 
       // webcamRef.current !== null && 
       // webcamRef.current.video.readyState === 4
-      webcamReadyRef.current == true 
-      &&
-      webcamRef.current.video.readyState === 4
-      
+      webcamReadyRef.current == true && webcamRef.current.video.readyState === 4
       ) {
-        // console.log('webcam check passed')
-        // const video = webcamRef.current.video
-        // const videoWidth = webcamRef.current.video.videoWidth
-        // const videoHeight = webcamRef.current.video.videoHeight
-        // webcamRef.current.video.width = videoWidth
-        // webcamRef.current.video.height = videoHeight
-        
-        // console.log(updateSpeed)
-        
         const hand = await net.estimateHands(videoRef.current)
         if (hand[0]) {
           handPositionRef.current = [
@@ -160,19 +100,6 @@ export default function Home() {
             0,
             (Math.round(hand[0].annotations.indexFinger[0][0]) / 100)
           ]
-          // console.log(handPositionRef.current)
-          // setHandData(hand[0])
-          // setVectorFromHandData(
-          //   [
-          //     (Math.round(hand[0].annotations.indexFinger[0][1]) / 50),
-          //     0,
-          //     (Math.round(hand[0].annotations.indexFinger[0][0]) / 100)
-          //   ]
-          // )
-
-
-        } else {
-          // setHandData(null)
         }
       }
   }
@@ -199,7 +126,7 @@ export default function Home() {
           // canvasRef.current.width = videoWidth
           // canvasRef.current.height = videoHeight
 
-          setWebcamReady(true)
+          // setWebcamReady(true)
           webcamReadyRef.current = true
           // setUpdateSpeed(router.query.speed)
           if (router.query.speed) {
