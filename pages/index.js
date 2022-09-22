@@ -56,6 +56,7 @@ function Box(props) {
 
 
 export default function Home() {
+  console.log('component render')
   const webcamRef = useRef(null)
   const canvasRef = useRef(null)
   const [handData, setHandData] = useState(null)
@@ -74,13 +75,42 @@ export default function Home() {
 
     setInterval(() => {
       detectHand(net)
-    }, 500)
+    }, 200)
     
   }
 
-  console.log(handPositionRef.current)
+  // console.log(handPositionRef.current)
 
-  
+  function Boxy(props) {
+    // This reference gives us direct access to the THREE.Mesh object
+    const ref = useRef()
+    // Hold state for hovered and clicked events
+    // const [hovered, hover] = useState(false)
+    // const [clicked, click] = useState(false)
+    // Subscribe this component to the render-loop, rotate the mesh every frame
+    useFrame((state, delta) => {
+      ref.current.rotation.x = handPositionRef.current[0]
+      ref.current.rotation.y = handPositionRef.current[2]
+    })
+    // useFrame(({ gl, scene, camera }) => (ref.current.rotation.x = handPositionRef.current[0]));
+
+    // useFrame((gl, delta) => (props.handRotation))
+    // Return the view, these are regular Threejs elements expressed in JSX
+    return (
+      <mesh
+        {...props}
+        ref={ref}
+        // scale={clicked ? 1.5 : 1}
+        scale={1}
+        // onClick={(event) => click(!clicked)}
+        // onPointerOver={(event) => hover(true)}
+        // onPointerOut={(event) => hover(false)}
+        >
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={'hotpink'} />
+      </mesh>
+    )
+  }
 
 
   const detectHand = async (net) => {
@@ -88,7 +118,10 @@ export default function Home() {
       // typeof webcamRef.current !=='undefined' && 
       // webcamRef.current !== null && 
       // webcamRef.current.video.readyState === 4
-      webcamReadyRef.current == true
+      webcamReadyRef.current == true 
+      &&
+      webcamRef.current.video.readyState === 4
+      
       ) {
         // console.log('webcam check passed')
         // const video = webcamRef.current.video
@@ -100,14 +133,15 @@ export default function Home() {
 
         const hand = await net.estimateHands(videoRef.current)
         if (hand[0]) {
-          console.log('hand in sight')
+          console.log('HAND DETECTED')
+          // console.log('hand in sight')
           // console.log(hand)
           handPositionRef.current = [
             (Math.round(hand[0].annotations.indexFinger[0][1]) / 50),
             0,
             (Math.round(hand[0].annotations.indexFinger[0][0]) / 100)
           ]
-          console.log(handPositionRef.current)
+          // console.log(handPositionRef.current)
           // setHandData(hand[0])
           // setVectorFromHandData(
           //   [
@@ -209,7 +243,7 @@ export default function Home() {
           <pointLight position={[-10, -10, -10]} />
 
           {/* <Box position={[-1.2, 0, 0]} /> */}
-          <Box 
+          <Boxy 
             // position={[
             //     (handPositionRef.current[2]/ 5),
             //     (handPositionRef.current[0]/ 5),
