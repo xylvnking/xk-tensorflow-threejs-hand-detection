@@ -16,6 +16,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Stars } from '@react-three/drei'
 import { useRouter } from 'next/router'
 
+const defaultSpeed = 200
+
 const CameraController = () => {
   const { camera, gl } = useThree();
   useEffect(
@@ -75,9 +77,16 @@ export default function Home() {
   // const [updateSpeed, setUpdateSpeed] = useState(router.query.speed)
   const [vectorFromHandData, setVectorFromHandData] = useState([0,0,0])
 
+  // const [windowSize, setWindowSize] = useState();
+
+
+  // console.log(windowSize.innerWidth)
+  // console.log(windowSize.innerHeight)
+
   const runHandPose = async () => {
     const net = await handpose.load({
       inputResolution:{width:640, height:480}, 
+      // inputResolution:{width:900, height:480}, 
       scale:.25
     })
     // console.log(updateSpeed)
@@ -146,10 +155,6 @@ export default function Home() {
         
         const hand = await net.estimateHands(videoRef.current)
         if (hand[0]) {
-          console.log('HAND DETECTED')
-          // console.log('hand in sight')
-          // console.log(hand)
-          console.log(updateSpeed)
           handPositionRef.current = [
             (Math.round(hand[0].annotations.indexFinger[0][1]) / 50),
             0,
@@ -172,7 +177,7 @@ export default function Home() {
       }
   }
 
-  useEffect(() => {
+  useEffect(() => { // webcam and router query check
     console.log('webcamcheck useffect called')
     const checkWebcam = () => {
       if (
@@ -197,14 +202,19 @@ export default function Home() {
           setWebcamReady(true)
           webcamReadyRef.current = true
           // setUpdateSpeed(router.query.speed)
-          updateSpeed.current = router.query.speed
+          if (router.query.speed) {
+            updateSpeed.current = router.query.speed
+
+          } else {
+            updateSpeed.current = defaultSpeed
+          }
 
           runHandPose()
         }
     }
     checkWebcam()
   }, [router.query])
-  // }, [webcamRef.current])
+  
 
   return (
     <div className={mainStyles.container}>
@@ -218,35 +228,23 @@ export default function Home() {
         
         <Webcam ref={webcamRef} style={
               {
-                  // position: 'absolute',
-                  // marginLeft: 'auto',
-                  // marginRight: 'auto',
-                  // left: 0,
-                  // right: 0,
                   textAlign: 'center',
                   zIndex:9,
                   width: 640,
                   height: 480,
               }
             }/>
-          {/* <canvas ref={canvasRef} style={
-          {
-              position: 'absolute',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              left: 0,
-              right: 0,
-              textAlign: 'center',
-              zIndex:9,
-              width: 640,
-              height: 480,
-            }
-          }/> */}
+          <section>
+            <h1>yeah title</h1>
+            <button>button</button>
+
+          </section>
           <div
             style={{
               width: 640,
-              height: 480,
-              // backgroundColor: 'red'
+              // width: '100vw',
+              // height: 480,
+              height: '33vh',
             }}
           >
             
@@ -264,41 +262,13 @@ export default function Home() {
 
             {/* <Box position={[-1.2, 0, 0]} /> */}
             <Boxy 
-              // position={[
-              //     (handPositionRef.current[2]/ 5),
-              //     (handPositionRef.current[0]/ 5),
-              //     0,
-              //   ]} 
-              // position={[
-              //     (vectorFromHandData[2]/ 5),
-              //     (vectorFromHandData[0]/ 5),
-              //     0,
-              //   ]} 
-                // rotation={[1, 3, 50]}
-                // rotation={vectorFromHandData}
-                // handRotation={handPositionRef.current}
                 position={[0, 0, 0]} 
-              // position={handPositionRef.current}
-              // rotation={handPositionRef.current}
-              // rotation={
-              //   [
-              //     `${handData ? (Math.round(handData.annotations.indexFinger[0][1]) / 50) : 0}`, 
-              //     0,
-              //     `${handData ? (Math.round(handData.annotations.indexFinger[0][0]) / 100) : 0}`, 
-              //   ]}
             />
             
             <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1}/>
           </Canvas>
           </div>
       </main>
-        
-        {/* {
-          handData &&
-        // <h1>finger position is {typeof handData.annotations.indexFinger[0][0]}</h1>
-        <h1>finger position is {Math.round(handData.annotations.indexFinger[0][0])}</h1>
-        } */}
-
     </div>
   )
 }
