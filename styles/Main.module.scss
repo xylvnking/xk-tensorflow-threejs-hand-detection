@@ -12,6 +12,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
     
 
     main {
@@ -20,6 +21,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/memphis-mini-dark.png');
     
     }
 }
@@ -53,6 +55,7 @@
     // bottom:0px;
 }
 .threeCanvasContainer {
+
     // position: absolute;
     // border-top-style: none;
     // border-bottom-left-radius: 10px;
@@ -63,6 +66,6 @@
     // border-color: rgb(0, 0, 0);
     // border-width: 10px;
     
-    // background-color: rgb(11, 11, 11);
+    background-color: rgb(11, 11, 11);
     // background-color: rgb(100, 100, 100);
 }

@@ -112,6 +112,7 @@ export default function Home() {
             0,
             (Math.round(hand[0].annotations.indexFinger[0][0]) / 100)
           ]
+          
         }
       }
   }
@@ -157,6 +158,7 @@ export default function Home() {
     }
     checkWebcam()
   }, [router.query])
+  
   
 
   return (
@@ -220,14 +222,10 @@ export default function Home() {
               <details>
                 <summary>About</summary>
                 <section>
-                  <p>Street art migas gochujang, leggings jean shorts helvetica next level direct trade keffiyeh meggings tacos truffaut sartorial freegan glossier. Flexitarian man braid fanny pack hella next level hashtag Brooklyn blue bottle shaman banjo williamsburg locavore pug. Tbh butcher ennui forage, salvia YOLO marfa actually artisan. Kickstarter mlkshk street art adaptogen ennui bicycle rights. Keytar DIY same prism green juice pour-over franzen. VHS kogi trust fund next level, tattooed gastropub bicycle rights truffaut vibecession DSA praxis.</p>
+                  <p>This project uses the hand pose detection model from TensorFlow to identify a single hand using a webcam. The positional x and y coordinates from the hands vector data is then referenced by the three.js object to drive its rotation vector values.</p>
+                  <p>Consider this the 'hello world' of this use case. There's so much data generated about the position of the hands which would allow for <em>actual</em> gesture detection. Using the hand positional data for the position and that of the rotation for the rotation instead of reversing it like I have here would be neat. There's a lot you could do, but I have no <em>actual</em> use for this, so I'm moving on to different project.</p>
 
-                </section>
-              </details>
-              <details>
-                <summary>About</summary>
-                <section>
-                  <p>Street art migas gochujang, leggings jean shorts helvetica next level direct trade keffiyeh meggings tacos truffaut sartorial freegan glossier. Flexitarian man braid fanny pack hella next level hashtag Brooklyn blue bottle shaman banjo williamsburg locavore pug. Tbh butcher ennui forage, salvia YOLO marfa actually artisan. Kickstarter mlkshk street art adaptogen ennui bicycle rights. Keytar DIY same prism green juice pour-over franzen. VHS kogi trust fund next level, tattooed gastropub bicycle rights truffaut vibecession DSA praxis.</p>
+        
 
                 </section>
               </details>
@@ -250,14 +248,14 @@ export default function Home() {
             >
             
             {/* <Suspense> <Model/> </Suspense> */}
-          {/* <Canvas>
+          <Canvas>
             <CameraController />
             <ambientLight intensity={0.5} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
             <pointLight position={[-10, -10, -10]} />
             <Boxy />
             <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1}/>
-          </Canvas> */}
+          </Canvas>
           </div>
             <Webcam 
               ref={webcamRef} 

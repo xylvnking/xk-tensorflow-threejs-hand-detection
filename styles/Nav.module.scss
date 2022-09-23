@@ -27,8 +27,8 @@
         transition: height .5s, width .5s, border-radius .5s, font-size .5s;
         height: 100px;
         width: 100px;
-        border-top-right-radius: 50%;
-        border-bottom-right-radius: 50%;
+        // border-top-right-radius: 50%;
+        // border-bottom-right-radius: 50%;
 
         
     }
@@ -42,7 +42,7 @@
     top: 0px;
     right: 0px;
     // left: 40px;
-    height: 100vh;
+    min-height: 200vh;
     width: 100vw;
     max-width: 750px;
     background-color: rgb(9, 9, 9);
