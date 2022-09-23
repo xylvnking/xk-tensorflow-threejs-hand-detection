@@ -16,6 +16,8 @@ There is a TON you could do with it, but ultimately I have zero real-world use c
 
 I avoided using state to drive anything because performance was already heavy. I used a reference (useRef) in combination with React Three Fiber's useFrame hook which renders independently from React, saving me from re-renders due to state changes. 
 
+The performance for this project on mobile isn't great. It's a lot to ask of lower end phones. It works but the initial load time is slow
+
 ## About the code
 
 It's pretty simple.
