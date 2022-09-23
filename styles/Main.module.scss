@@ -49,17 +49,20 @@
 .webcamElement {
     width: 100vw;
     max-width: 680px;
+    // position: absolute;
+    // bottom:0px;
 }
 .threeCanvasContainer {
+    // position: absolute;
     // border-top-style: none;
     // border-bottom-left-radius: 10px;
     // border-bottom-right-radius: 10px;
     // background-image: url('https://media.discordapp.net/attachments/1007727971571875952/1022679182997729300/xylvn_cyberspace_c1a412bb-640a-44f9-8b06-ddf65fc36efd.png?width=891&height=891');
 
-    border-style: solid;
-    border-color: rgb(0, 0, 0);
-    border-width: 10px;
+    // border-style: solid;
+    // border-color: rgb(0, 0, 0);
+    // border-width: 10px;
     
-    background-color: rgb(11, 11, 11);
-    background-color: rgb(100, 100, 100);
+    // background-color: rgb(11, 11, 11);
+    // background-color: rgb(100, 100, 100);
 }
