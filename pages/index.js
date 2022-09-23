@@ -153,7 +153,7 @@ export default function Home() {
           // console.log(webcamRef.current.video.readyState)
           
 
-          // runHandPose()
+          runHandPose()
         }
     }
     checkWebcam()
