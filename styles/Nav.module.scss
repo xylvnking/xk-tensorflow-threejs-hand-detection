@@ -1,0 +1,176 @@
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto+Mono:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+.openMenu {
+    position: fixed;
+    top: 100px;
+    // bottom: 240px;
+    right: 0px;
+    background-color: rgb(253, 253, 253);
+    border-style:none;
+    height: 50px;
+    width: 50px;
+    z-index: 999;
+    // transform: rotate(45deg);
+    // font-size: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    color: black;
+    border-radius: 50%;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    // backdrop-filter: blur(10px);
+    cursor: pointer;
+    border-width: 0px;
+    transition: height 1s, width 1s, border-radius .5s, font-size 1s;
+    &:hover {
+        font-size: 32px;
+        transition: height .5s, width .5s, border-radius .5s, font-size .5s;
+        height: 100px;
+        width: 100px;
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+
+        
+    }
+    &:active {
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    }
+}
+
+.nav {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    // left: 40px;
+    height: 100vh;
+    width: 100vw;
+    max-width: 750px;
+    background-color: rgb(9, 9, 9);
+    z-index: 99;
+    padding: 20px;
+    overflow-y: scroll;
+    
+
+    .navTopSection {
+        display: flex;
+        justify-content: flex-end;
+        font-size: 32px;
+        h1 {
+            border-style: solid;
+            border-radius: 50%;
+            padding: 10px;
+            padding-left: 18px;
+            padding-right: 18px;
+            // width: 50px;
+            // height: 50px;
+            // padding: 10px;
+            margin: 0px;
+            cursor: pointer;
+            user-select: none;
+            z-index: 9999;
+            &:hover {
+                background-color: white;
+                color: black;
+            }
+            &:active {
+                background-color: rgb(54, 89, 138);
+                color: black;
+
+            }
+        }
+    }
+
+    .speedButtons {
+        margin: 20px;
+        margin-top: -50px;
+        display: flex;
+        flex-direction: column; 
+        ul {
+            padding: 0px;
+            list-style: square;
+            
+            h1 {
+                font-size: 40px;
+                margin: 0px;
+            }
+            h2 {
+                font-size: 24px;
+                color: rgb(244, 244, 244);
+                font-weight: 500;
+                span {
+                    color: #b9ffff;
+                    text-align: center;
+                }
+            }
+            h3 {
+                font-weight: 300;
+                text-align: center;
+            }
+            li {
+                padding-top: 10px;
+            }
+        }
+        div {
+            display: flex;
+            flex-direction: row;
+            
+        }
+        a {
+            
+        }
+        a {
+            width: 90%;
+            padding: 10px;
+            font-size: 20px;
+            border-radius: 10px;
+            border-style: none;
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #303030;
+            &:hover {
+                background-color: #bebebe;
+                color: black;
+            }
+            &:active {
+                box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+            }
+        }
+    }
+    .detailsContainer {
+        border-bottom-style: solid;
+        // border-top-style: solid;
+        border-color: white;
+        // border-radius: 10px;
+    }
+    details {
+        summary {
+            cursor: pointer;
+            // list-style: none;
+            font-size: 20px;
+            border-style: solid;
+            // border-radius: 10px;
+            padding:10px;
+            background-color: rgb(31, 31, 31);
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+
+            border-bottom-style: none;
+            // border-top-style: none;
+            
+        }
+        section {
+            background-color: rgb(31, 31, 31);
+            border-style: solid;
+            border-bottom-style: none;
+            
+            // border-radius: 10px;
+            padding:10px;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            border-top-style: none;
+
+        }
+        
+    }
+}

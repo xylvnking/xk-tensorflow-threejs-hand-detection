@@ -1,7 +1,10 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
+// import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css'
 import mainStyles from '../styles/Main.module.scss'
+import navStyles from '../styles/Nav.module.scss'
 
 import React, {Suspense, useRef, useEffect, useState} from 'react'
 
@@ -36,9 +39,16 @@ const CameraController = () => {
 };
 
 
+
 export default function Home() {
-  console.log('component render')
   const router = useRouter()
+  const reloadWindowWithNewSpeed = () => {
+    router.replace('/nooo')
+  }
+
+
+
+  console.log('component render')
   const webcamRef = useRef(null)
   // const canvasRef = useRef(null)
   // const [handData, setHandData] = useState(null)
@@ -51,6 +61,7 @@ export default function Home() {
   const updateSpeed = useRef(null)
   // const [updateSpeed, setUpdateSpeed] = useState(router.query.speed)
   // const [vectorFromHandData, setVectorFromHandData] = useState([0,0,0])
+  const [navOpen, setNavOpen] = useState(false)
 
   const runHandPose = async () => {
     const net = await handpose.load({
@@ -78,6 +89,7 @@ export default function Home() {
       // {...props}
       ref={ref}
       scale={1}
+      position={[0, 0, 0]} 
       >
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color={'hotpink'} />
@@ -104,6 +116,7 @@ export default function Home() {
       }
   }
 
+
   useEffect(() => { // webcam and router query check
     console.log('webcamcheck useffect called')
     const checkWebcam = () => {
@@ -111,22 +124,23 @@ export default function Home() {
         typeof webcamRef.current !=='undefined' 
         && 
         webcamRef.current !== null 
-        // && 
-        // webcamRef.current.video.readyState === 4
         ) {
           console.log('check webcam success')
-
+          // console.log(webcamRef.current.video)
           const video = webcamRef.current.video
-          const videoWidth = webcamRef.current.video.videoWidth
-          const videoHeight = webcamRef.current.video.videoHeight
+          
           videoRef.current = video
+          
+          // const videoWidth = webcamRef.current.video.videoWidth
+          // const videoHeight = webcamRef.current.video.videoHeight
+          // webcamRef.current.video.width = videoWidth
+          // webcamRef.current.video.height = videoHeight
 
-          webcamRef.current.video.width = videoWidth
-          webcamRef.current.video.height = videoHeight
-          // canvasRef.current.width = videoWidth
-          // canvasRef.current.height = videoHeight
+          // console.log(webcamRef.current.video)
 
+          
           // setWebcamReady(true)
+          
           webcamReadyRef.current = true
           // setUpdateSpeed(router.query.speed)
           if (router.query.speed) {
@@ -135,8 +149,10 @@ export default function Home() {
           } else {
             updateSpeed.current = defaultSpeed
           }
+          // console.log(webcamRef.current.video.readyState)
+          
 
-          runHandPose()
+          // runHandPose()
         }
     }
     checkWebcam()
@@ -144,6 +160,10 @@ export default function Home() {
   
 
   return (
+    // <div className={mainStyles.containerackground}>
+
+    // </div>
+
     <div className={mainStyles.container}>
       <Head>
         <title>Create Next App</title>
@@ -151,50 +171,108 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <main className={mainStyles.main}> */}
+        {/* <nav className={navStyles.nav}> */}
+        {
+          !navOpen &&
+          <button className={navStyles.openMenu} onClick={() => setNavOpen(true)}>MENU</button>
+        }
+        {
+          navOpen &&
+          <nav className={navStyles.nav}>
+            <section className={navStyles.navTopSection}>
+              <h1 onClick={() => setNavOpen(false)} >X</h1>
+            </section>
+            <section className={navStyles.speedButtons}>
+              {/* <h3>By default the hand detection occurs once every 200ms. You can increase or decrease this speed using the buttons below, or by including a value in the url by appending <span>?speed={'<'}NUMBER{'>'}</span></h3> */}
+              <ul>
+                <h1>how to use:</h1>
+                <h2> {'>'} default detection speed is every 200ms</h2>
+                <h2> {'>'} change this with buttons below</h2>
+                <h2> {'>'} or include a value in the url by appending: </h2>
+                <h2 style={{color: '#b9ffff', textAlign: 'center'}}>?speed={'<'}NUMBER{'>'}</h2>
+                <h3>Maximum performance is dependent upon client hardware</h3>
+                  {/* <li>default detection speed is every 200ms</li>
+                  <li>change this with buttons below</li>
+                  <li>or include a value in the url by appending: <br /><br /><span>?speed={'<'}NUMBER{'>'}</span></li>
+                  <li>maximum performance is dependent upon client hardware</li> */}
+              </ul>
+              <div>
+                {/* <button href='/?speed=10'>50</button> */}
+                  {/* <Link href='/?speed=10'>
+                    <button>10</button>
+                  </Link>
+                  <Link href='/?speed=50'>
+                  </Link> */}
+                <a href='/?speed=10'>10</a>
+                <a href='/?speed=50'>50</a>
+                {/* <button onClick={() => reloadWindowWithNewSpeed(10)}><a href='/?speed=10'>10</a></button> */}
+                {/* <button>50</button> */}
+              </div>
+              <div>
+                <a href='/?speed=200'>200</a>
+                <a href='/?speed=1000'>1000</a>
+                {/* <button>200</button>
+                <button>1000</button> */}
+              </div>
+            </section>
+            <section className={navStyles.detailsContainer}>
+              <details>
+                <summary>About</summary>
+                <section>
+                  <p>Street art migas gochujang, leggings jean shorts helvetica next level direct trade keffiyeh meggings tacos truffaut sartorial freegan glossier. Flexitarian man braid fanny pack hella next level hashtag Brooklyn blue bottle shaman banjo williamsburg locavore pug. Tbh butcher ennui forage, salvia YOLO marfa actually artisan. Kickstarter mlkshk street art adaptogen ennui bicycle rights. Keytar DIY same prism green juice pour-over franzen. VHS kogi trust fund next level, tattooed gastropub bicycle rights truffaut vibecession DSA praxis.</p>
+
+                </section>
+              </details>
+              <details>
+                <summary>About</summary>
+                <section>
+                  <p>Street art migas gochujang, leggings jean shorts helvetica next level direct trade keffiyeh meggings tacos truffaut sartorial freegan glossier. Flexitarian man braid fanny pack hella next level hashtag Brooklyn blue bottle shaman banjo williamsburg locavore pug. Tbh butcher ennui forage, salvia YOLO marfa actually artisan. Kickstarter mlkshk street art adaptogen ennui bicycle rights. Keytar DIY same prism green juice pour-over franzen. VHS kogi trust fund next level, tattooed gastropub bicycle rights truffaut vibecession DSA praxis.</p>
+
+                </section>
+              </details>
+            </section>
+
+          </nav>
+        }
       <main >
         
-        <Webcam ref={webcamRef} style={
-              {
-                  textAlign: 'center',
-                  zIndex:9,
-                  width: 640,
-                  height: 480,
-              }
-            }/>
-          <section>
-            <h1>yeah title</h1>
-            <button>button</button>
-
-          </section>
-          <div
+      <div
             style={{
-              width: 640,
-              // width: '100vw',
-              // height: 480,
-              height: '33vh',
+              width: '100vw',
+              height: '100%'
+              // width:
+              // width: 640,
+              //  height: 480,
+              // width: '100vw', height: 480,
             }}
-          >
+            className={`${mainStyles.threeCanvasContainer} ${mainStyles.box}`}
+            >
             
-          <Canvas>
+            {/* <Suspense> <Model/> </Suspense> */}
+          {/* <Canvas>
             <CameraController />
-            {/* <Suspense>
-                <Model/>
-            </Suspense> */}
-
             <ambientLight intensity={0.5} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-            <pointLight 
-            position={[-10, -10, -10]} 
-            />
-
-            {/* <Box position={[-1.2, 0, 0]} /> */}
-            <Boxy 
-                position={[0, 0, 0]} 
-            />
-            
+            <pointLight position={[-10, -10, -10]} />
+            <Boxy />
             <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1}/>
-          </Canvas>
+          </Canvas> */}
           </div>
+            <Webcam 
+              ref={webcamRef} 
+              className={`${mainStyles.webcamElement}`}
+              style={{
+                // textAlign: 'center',
+                zIndex:9,
+                // width: 640,
+                width: '100vw',
+                maxWidth: '400px'
+                // height: 480,
+                // objectFit: 'cover'
+              }}
+            />
+        
+          
       </main>
     </div>
   )
